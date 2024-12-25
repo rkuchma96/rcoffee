@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "rcoffee"
+version = "0.1.0"
+description = "Yet another rclone offline folder implementation"
+authors = ["Roman Kuchma"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+# Minimum supported version by VSCode debugger
+python = "^3.8"
+watchfiles = "^0.24"
+pytimeparse = "1.1.8"
+
+[tool.poetry.group.dev.dependencies]
+py-spy = "^0.4.0"
+
+[tool.black]
+line-length = 120
+
+[tool.pylint]
+max-line-length = 120
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,22 @@
+{
+    "python.terminal.activateEnvironment": true,
+    "[python]": {
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+        },
+        "editor.defaultFormatter": "ms-python.black-formatter",
+        "editor.formatOnPaste": true,
+        "editor.formatOnSave": true,
+        "editor.formatOnSaveMode": "file",
+        "editor.formatOnType": true
+    },
+    "python.testing.pytestArgs": [
+        "tests"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true,
+    "flake8.args": [
+        "--max-line-length",
+        "120"
+    ]
+}

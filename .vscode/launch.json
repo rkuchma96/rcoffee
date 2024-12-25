@@ -1,0 +1,51 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python Debugger: Module",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "rcoffee",
+            "args": [
+                "${input:remote_path}",
+                "${input:local_path}",
+                "--poll-interval=${input:poll_interval}",
+                "--modify-window=${input:modify_window}",
+                "--batch-cooldown=${input:batch_cooldown}"
+            ]
+        }
+    ],
+    "inputs": [
+        {
+            "id": "remote_path",
+            "type": "promptString",
+            "description": "Fully-qualified remote path to sync, e.g. \"gdrive:/Sync\""
+        },
+        {
+            "id": "local_path",
+            "type": "promptString",
+            "description": "Local path to sync like \"/home/bob/gdrive\" or \"C:\\Users\\Alice\\onedrive\"",
+        },
+        {
+            "id": "poll_interval",
+            "type": "promptString",
+            "description": "Interval to poll the remote for changes (default 1s)",
+            "default": "1s"
+        },
+        {
+            "id": "modify_window",
+            "type": "promptString",
+            "description": "Max time diff to be considered the same (default 1s)",
+            "default": "1s"
+        },
+        {
+            "id": "batch_cooldown",
+            "type": "promptString",
+            "description": "Minimum time between the last detected change and actual sync (default 1s)",
+            "default": "1s"
+        }
+    ]
+}
