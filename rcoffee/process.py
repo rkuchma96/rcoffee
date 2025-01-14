@@ -49,11 +49,11 @@ class Process:
         """Awaits the actual exit of the spawned rclone subprocess"""
         await (await self._spawn_rclone(command, *args, stdout=None)).wait()
 
-    async def _transfer(self, command: str, source: Union[str, Path], dest: Union[str, Path]) -> None:
-        await self._exit_rclone(command, "--update", f"--modify-window={self.modify_window}", source, dest)
+    async def _transfer(self, command: str, source: Union[str, Path], dest: Union[str, Path], *args) -> None:
+        await self._exit_rclone(command, "--update", f"--modify-window={self.modify_window}", source, dest, *args)
 
     async def _sync_update(self, source: str, dest: str) -> None:
-        await self._transfer("sync", source, dest)
+        await self._transfer("sync", source, dest, "--delete-before")
 
     async def _copy_update(self, source: Union[str, Path], dest: Union[str, Path]) -> None:
         await self._transfer("copy", source, dest)
@@ -116,6 +116,7 @@ class Process:
 
         while True:
             await self._sync_request
+            await self._dedupe()
 
             log.info("Batching changes...")
 
@@ -129,11 +130,13 @@ class Process:
                 log.info("Changes detected, sleeping for %ss...", self.batch_cooldown.total_seconds())
                 await asyncio.sleep(self.batch_cooldown.total_seconds())
 
+            # Any changes in destination(s) between now and the end of deletion in destination(s) will be lost.
+            # Use "rclone sync --delete-before ..." to delete files in destination before transfer and minimize data 
+            # loss.
+
             self._sync_request = asyncio.get_running_loop().create_future()
 
             log.info("Batching complete, processing batched changes...")
-
-            await self._dedupe()
 
             if need_push and need_pull:
                 log.info("Both local and remote have changed")
